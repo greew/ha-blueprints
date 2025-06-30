@@ -108,7 +108,7 @@ blueprint:
       selector:
         action: { }
 
-  source_url: https://github.com/greew/ha-blueprints/Z2M Aqara Wireless Remote Switch H1 (Double Rocker).yaml
+  source_url: https://github.com/greew/ha-blueprints/blob/main/Z2M%20Aqara%20Wireless%20Remote%20Switch%20H1%20(Double%20Rocker).yaml
 
 mode: restart
 

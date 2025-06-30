@@ -1,0 +1,207 @@
+blueprint:
+  name: Z2M - Aqara H1 (WRS-R02) - Wireless Remote Switch (Double Rocker)
+  description: |
+    Scene & device control using Aqara two button remote
+    
+    This blueprint allows you to use the Aqara H1 (WRS-R02) Wireless Remote 
+    Switch with Zigbee2MQTT to trigger actions in Home Assistant based on 
+    button presses.
+    
+    This is a direct copy of the below given blueprint, but with added support 
+    for the "both" button presses.
+    https://community.home-assistant.io/t/z2m-aqara-h1-wrs-r02-wireless-remote-switch-double-rocker/376959/40
+    
+    It has been updated to support the latest Zigbee2MQTT firmware (2.0.0+) 
+    with the new event types instead of sensor states.
+
+  domain: automation
+  input:
+    button_sensor:
+      name: Aqara switch
+      description: Aqara switch to use
+      selector:
+        entity:
+          domain: event
+          integration: mqtt
+          multiple: false
+
+    button_left_single_press:
+      name: Left button - Single press
+      description: Action to run on a single press of the left button
+      default: [ ]
+      selector:
+        action: { }
+
+    button_left_double_press:
+      name: Left button - Double press
+      description: Action to run on a double press of the left button
+      default: [ ]
+      selector:
+        action: { }
+
+    button_left_triple_press:
+      name: Left button - Triple press
+      description: Action to run on a triple press of the left button
+      default: [ ]
+      selector:
+        action: { }
+
+    button_left_hold:
+      name: Left button - Hold
+      description: Action to run when left button is held
+      default: [ ]
+      selector:
+        action: { }
+
+    button_right_single_press:
+      name: Right button - Single press
+      description: Action to run on a single press of the right button
+      default: [ ]
+      selector:
+        action: { }
+
+    button_right_double_press:
+      name: Right button - Double press
+      description: Action to run on a double press of the right button
+      default: [ ]
+      selector:
+        action: { }
+    button_right_triple_press:
+      name: Right button - Triple press
+      description: Action to run on a triple press of the right button
+      default: [ ]
+      selector:
+        action: { }
+
+    button_right_hold:
+      name: Right button - Hold
+      description: Action to run when right button is held
+      default: [ ]
+      selector:
+        action: { }
+
+    button_both_single_press:
+      name: Both buttons - Single press
+      description: Action to run on a single press of both buttons
+      default: [ ]
+      selector:
+        action: { }
+
+    button_both_double_press:
+      name: Both buttons - Double press
+      description: Action to run on a double press of both buttons
+      default: [ ]
+      selector:
+        action: { }
+
+    button_both_triple_press:
+      name: Both buttons - Triple press
+      description: Action to run on a triple press of both buttons
+      default: [ ]
+      selector:
+        action: { }
+
+    button_both_hold:
+      name: Both buttons - Hold
+      description: Action to run when both buttons are held
+      default: [ ]
+      selector:
+        action: { }
+
+  source_url: https://github.com/greew/ha-blueprints/Z2M Aqara Wireless Remote Switch H1 (Double Rocker).yaml
+
+mode: restart
+
+max_exceeded: silent
+
+trigger:
+  - platform: state
+    entity_id: !input button_sensor
+
+action:
+  - choose:
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'single_left'
+            entity_id: !input button_sensor
+        sequence: !input button_left_single_press
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'double_left'
+            entity_id: !input button_sensor
+        sequence: !input button_left_double_press
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'triple_left'
+            entity_id: !input button_sensor
+        sequence: !input button_left_triple_press
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'hold_left'
+            entity_id: !input button_sensor
+        sequence: !input button_left_hold
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'single_right'
+            entity_id: !input button_sensor
+        sequence: !input button_left_single_press
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'double_right'
+            entity_id: !input button_sensor
+        sequence: !input button_right_double_press
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'triple_right'
+            entity_id: !input button_sensor
+        sequence: !input button_right_triple_press
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'hold_right'
+            entity_id: !input button_sensor
+        sequence: !input button_right_hold
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'single_both'
+            entity_id: !input button_sensor
+        sequence: !input button_both_single_press
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'double_both'
+            entity_id: !input button_sensor
+        sequence: !input button_both_double_press
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'triple_both'
+            entity_id: !input button_sensor
+        sequence: !input button_both_triple_press
+
+      - conditions:
+          - condition: state
+            attribute: event_type
+            state: 'hold_both'
+            entity_id: !input button_sensor
+        sequence: !input button_both_hold
+
+
